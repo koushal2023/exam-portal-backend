@@ -31,6 +31,7 @@ public class QuestionController {
 
 	@Autowired
 	private QuizService quizService;
+
 // adding questions
 	@PostMapping("/")
 	public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
@@ -43,34 +44,44 @@ public class QuestionController {
 		return ResponseEntity.ok(questionService.updateQuestion(question));
 	}
 
-//	getting all quesiton
+//	getting n number of quesiton of the quiz which we have provided via qid not all the questions
 	@GetMapping("/quiz/{qid}")
-	public ResponseEntity<?> getQuestionsOfQuiz(@PathVariable("qid") Long qid){
+	public ResponseEntity<?> getQuestionsOfQuiz(@PathVariable("qid") Long qid) {
 //		this will return all of the quesitons but we want question less than or equals to the max numberOfQuestions
 //		Quiz quiz = new Quiz();
 //		quiz.setQid(qid);
 //		return ResponseEntity.ok(questionService.getQuestionsOfQuiz(quiz));
-		
+
 //		for that we use this code
 		Quiz quiz = quizService.getQuizById(qid);
 		Set<Question> questions = quiz.getQuestion();
-		List list=new ArrayList(questions);
-		if(list.size()>Integer.parseInt(quiz.getNumberOfQuestions())) {
-			list=list.subList(0, Integer.parseInt(quiz.getNumberOfQuestions()+1));
+		List list = new ArrayList(questions);
+		if (list.size() > Integer.parseInt(quiz.getNumberOfQuestions())) {
+			list = list.subList(0, Integer.parseInt(quiz.getNumberOfQuestions() + 1));
 		}
 		Collections.shuffle(list);
 		return ResponseEntity.ok(list);
 	}
-	
+
+//	getting all quesiton of the quiz
+	@GetMapping("/quiz/all/{qid}")
+	public ResponseEntity<?> getQuestionsOfQuizAdmin(@PathVariable("qid") Long qid) {
+//			this will return all of the quesitons but we want question less than or equals to the max numberOfQuestions
+			Quiz quiz = new Quiz();
+			quiz.setQid(qid);
+			return ResponseEntity.ok(questionService.getQuestionsOfQuiz(quiz));
+
+	}
+
 //	get single question
 	@GetMapping("/{quesId}")
-	public ResponseEntity<Question> getQuestionById(@PathVariable("quesId") Long quesId){
+	public ResponseEntity<Question> getQuestionById(@PathVariable("quesId") Long quesId) {
 		return ResponseEntity.ok(questionService.getQuestionById(quesId));
 	}
-	
+
 //	delete question
 	@DeleteMapping("/{quesId}")
-	public ResponseEntity<?> deleteQuestion(@PathVariable("quesId") Long quesId){
+	public ResponseEntity<?> deleteQuestion(@PathVariable("quesId") Long quesId) {
 		questionService.deleteQuestion(quesId);
 		return ResponseEntity.ok("question deleted successfully");
 	}

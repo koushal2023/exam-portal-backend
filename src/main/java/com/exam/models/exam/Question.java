@@ -1,5 +1,6 @@
 package com.exam.models.exam;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

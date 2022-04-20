@@ -24,13 +24,13 @@ public class Quiz {
 	private String maxMarks;
 	private String numberOfQuestions;
 	private boolean active = false;
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Category category;
-	
-//	we use HasSet<>() because we dont want to maintain the order
-	@OneToMany(mappedBy = "quiz",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+
+//	we use HasSet<>() because we don't want to maintain the order
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Set<Question> question=new HashSet<>();
+	private Set<Question> question = new HashSet<>();
 
 	public Quiz() {
 		super();
@@ -120,6 +120,5 @@ public class Quiz {
 				+ ", numberOfQuestions=" + numberOfQuestions + ", active=" + active + ", category=" + category
 				+ ", question=" + question + "]";
 	}
-	
-	
+
 }

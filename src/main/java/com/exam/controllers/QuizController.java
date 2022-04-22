@@ -1,5 +1,7 @@
 package com.exam.controllers;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +26,8 @@ public class QuizController {
 
 	@Autowired
 	private QuizService quizService;
+	@Autowired
+	private QuizRepository quizRepository;
 //	adding quiz
 	@PostMapping("/")
 	public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
@@ -43,10 +47,22 @@ public class QuizController {
 		return ResponseEntity.ok(quizService.getAllQuiz());
 	}
 	
+//	getting all the active quizzes
+	@GetMapping("/active")
+	public ResponseEntity<?> getAllActiveQuizzes(){
+		return ResponseEntity.ok(quizService.getAllActiveQuiz());
+	}
+	
 //	get single quiz
 	@GetMapping("/{qid}")
 	public ResponseEntity<?> getQuiz(@PathVariable("qid") Long qid){
 		return ResponseEntity.ok(quizService.getQuizById(qid));
+	}
+	
+//	get single active quiz
+	@GetMapping("/active/{qid}")
+	public ResponseEntity<?> getActiveQuiz(@PathVariable("qid") Long qid){
+		return ResponseEntity.ok(quizService.getActiveQuizById(qid));
 	}
 	
 //	delete quiz
@@ -54,4 +70,21 @@ public class QuizController {
 	public void deleteQuiz(@PathVariable("qid") Long qid){
 		quizService.deleteQuiz(qid);
 	}
+	
+//	get all quizzes by category id
+	@GetMapping("/bycategory/{cid}")
+	public ResponseEntity<?> getAllQuizByCategoryId(@PathVariable("cid") Long cid){
+		return ResponseEntity.ok(quizService.getAllQuizByCategoryId(cid));
+	}
+	
+//	get all quizzes by category id
+	@GetMapping("/active/bycategory/{cid}")
+	public ResponseEntity<?> getAllActiveQuizByCategoryId(@PathVariable("cid") Long cid){
+		return ResponseEntity.ok(quizService.getAllActiveQuizByCategoryId(cid));
+	}
+	
+//	@GetMapping("/all_active_quizzes")
+//	public ResponseEntity<?> findAllActiveQuizzes(){
+//		return ResponseEntity.ok(quizRepository.findAllActiveQuizzes());
+//	}
 }

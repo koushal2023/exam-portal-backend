@@ -1,4 +1,5 @@
 package com.exam.services.impl;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.exam.models.exam.Quiz;
 import com.exam.repository.QuizRepository;
 import com.exam.services.QuizService;
+
 @Service
 public class QuizServiceImpl implements QuizService {
 	@Autowired
@@ -25,7 +27,7 @@ public class QuizServiceImpl implements QuizService {
 
 	@Override
 	public Set<Quiz> getAllQuiz() {
-		return new LinkedHashSet<>( quizRepository.findAll());
+		return new LinkedHashSet<>(quizRepository.findAll());
 	}
 
 	@Override
@@ -37,6 +39,26 @@ public class QuizServiceImpl implements QuizService {
 	public void deleteQuiz(Long quizId) {
 		quizRepository.deleteById(quizId);
 
+	}
+
+	@Override
+	public Set<Quiz> getAllQuizByCategoryId(Long cid) {
+		return quizRepository.findByCategoryCid(cid);
+	}
+
+	@Override
+	public Set<Quiz> getAllActiveQuiz() {
+		return new LinkedHashSet<>(quizRepository.getAllActiveQuizzes());
+	}
+
+	@Override
+	public Quiz getActiveQuizById(Long quizId) {
+		return quizRepository.getByQid(quizId);
+	}
+
+	@Override
+	public Set<Quiz> getAllActiveQuizByCategoryId(Long cid) {
+		return quizRepository.getByCategoryCid(cid);
 	}
 
 }

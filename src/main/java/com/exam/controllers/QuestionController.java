@@ -3,6 +3,7 @@ package com.exam.controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,18 +48,15 @@ public class QuestionController {
 //	getting n number of quesiton of the quiz which we have provided via qid not all the questions
 	@GetMapping("/quiz/{qid}")
 	public ResponseEntity<?> getQuestionsOfQuiz(@PathVariable("qid") Long qid) {
-//		this will return all of the quesitons but we want question less than or equals to the max numberOfQuestions
-//		Quiz quiz = new Quiz();
-//		quiz.setQid(qid);
-//		return ResponseEntity.ok(questionService.getQuestionsOfQuiz(quiz));
-
-//		for that we use this code
 		Quiz quiz = quizService.getQuizById(qid);
 		Set<Question> questions = quiz.getQuestion();
-		List list = new ArrayList(questions);
+		List<Question> list = new ArrayList(questions);
 		if (list.size() > Integer.parseInt(quiz.getNumberOfQuestions())) {
 			list = list.subList(0, Integer.parseInt(quiz.getNumberOfQuestions() + 1));
 		}
+		list.forEach((q)->{
+			q.setAnswer("");
+		});
 		Collections.shuffle(list);
 		return ResponseEntity.ok(list);
 	}
@@ -66,10 +64,9 @@ public class QuestionController {
 //	getting all quesiton of the quiz
 	@GetMapping("/quiz/all/{qid}")
 	public ResponseEntity<?> getQuestionsOfQuizAdmin(@PathVariable("qid") Long qid) {
-//			this will return all of the quesitons but we want question less than or equals to the max numberOfQuestions
-			Quiz quiz = new Quiz();
-			quiz.setQid(qid);
-			return ResponseEntity.ok(questionService.getQuestionsOfQuiz(quiz));
+		Quiz quiz = new Quiz();
+		quiz.setQid(qid);
+		return ResponseEntity.ok(questionService.getQuestionsOfQuiz(quiz));
 
 	}
 
@@ -82,6 +79,34 @@ public class QuestionController {
 //	delete question
 	@DeleteMapping("/{quesId}")
 	public void deleteQuestion(@PathVariable("quesId") Long quesId) {
-		questionService.deleteQuestion(quesId);		
+		questionService.deleteQuestion(quesId);
+	}
+
+//	eval quiz
+	@PostMapping("/eval-quiz")
+	public ResponseEntity<?> evalQuiz(@RequestBody List<Question> questions) {
+		System.out.println(questions);
+		double marksGot = 0;
+		int correctAnswers = 0;
+		int attempted = 0;
+		
+
+		for (Question q : questions) {
+//			single question
+			Question question = this.questionService.getQuestionById(q.getQuesId());
+			if (question.getAnswer().equals(q.getGivenAnswer())) {
+//				means answer is correct
+				correctAnswers++;
+				double marksSingle =  Double.parseDouble(questions.get(0).getQuiz().getMaxMarks()) / questions.size();
+				marksGot += marksSingle;
+			}
+
+			if (q.getGivenAnswer() != null) {
+				attempted++;
+			}
+
+		}
+		Map<String, Object> map =Map.of("marksGot",marksGot,"correctAnswers",correctAnswers,"attempted",attempted);
+		return ResponseEntity.ok(map);
 	}
 }

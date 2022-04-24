@@ -1,7 +1,5 @@
 package com.exam.controllers;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.exam.models.exam.Quiz;
-import com.exam.repository.QuizRepository;
 import com.exam.services.QuizService;
-import com.exam.services.impl.QuizServiceImpl;
 
 @RestController
 @RequestMapping("/quiz")
@@ -27,7 +23,6 @@ public class QuizController {
 	@Autowired
 	private QuizService quizService;
 	@Autowired
-	private QuizRepository quizRepository;
 //	adding quiz
 	@PostMapping("/")
 	public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
@@ -82,9 +77,4 @@ public class QuizController {
 	public ResponseEntity<?> getAllActiveQuizByCategoryId(@PathVariable("cid") Long cid){
 		return ResponseEntity.ok(quizService.getAllActiveQuizByCategoryId(cid));
 	}
-	
-//	@GetMapping("/all_active_quizzes")
-//	public ResponseEntity<?> findAllActiveQuizzes(){
-//		return ResponseEntity.ok(quizRepository.findAllActiveQuizzes());
-//	}
 }

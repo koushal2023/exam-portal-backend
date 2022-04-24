@@ -1,12 +1,10 @@
 package com.exam.controllers;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.exam.helper.UserFoundException;
-import com.exam.helper.UserNotFoundException;
 import com.exam.models.Role;
 import com.exam.models.User;
 import com.exam.models.UserRole;

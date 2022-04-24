@@ -1,6 +1,5 @@
 package com.exam.models.exam;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 @Entity
 public class Question {
 	@Id 
@@ -20,7 +21,13 @@ public class Question {
 	private String option2;
 	private String option3;
 	private String option4;
+
+	
 	private String answer;
+	
+	@Transient
+	private String givenAnswer;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Quiz quiz;
 	public Question() {
@@ -93,6 +100,13 @@ public class Question {
 	}
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
+	}
+	
+	public String getGivenAnswer() {
+		return givenAnswer;
+	}
+	public void setGivenAnswer(String givenAnswer) {
+		this.givenAnswer = givenAnswer;
 	}
 	@Override
 	public String toString() {

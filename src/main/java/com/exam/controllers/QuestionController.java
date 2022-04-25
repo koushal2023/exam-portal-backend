@@ -106,7 +106,7 @@ public class QuestionController {
 			}
 
 		}
-		Map<String, Object> map =Map.of("marksGot",marksGot,"correctAnswers",correctAnswers,"attempted",attempted);
+		Map<String, Object> map = Map.of("marksGot",marksGot,"correctAnswers",correctAnswers,"attempted",attempted);
 		return ResponseEntity.ok(map);
 	}
 }

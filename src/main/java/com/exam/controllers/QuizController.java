@@ -22,7 +22,7 @@ public class QuizController {
 
 	@Autowired
 	private QuizService quizService;
-	@Autowired
+	
 //	adding quiz
 	@PostMapping("/")
 	public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
